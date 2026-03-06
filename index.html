@@ -8,54 +8,85 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* --- Reset & Base --- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: oklch(.985 0 0);
-      --bg-subtle: oklch(.965 0 0);
-      --text: oklch(.15 0 0);
-      --text-muted: oklch(.45 0 0);
-      --border: oklch(.88 0 0);
-      --accent: oklch(.55 .12 250);
-      --accent-hover: oklch(.45 .14 250);
-      --code-bg: oklch(.95 0 0);
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      /* Palette inspired by satellite false-color composites */
+      --bg: #fafaf8;
+      --bg-subtle: #f2f1ed;
+      --text: #1a1a18;
+      --text-muted: #6b6960;
+      --border: #ddd9d0;
+
+      /* Deep ocean teal — primary */
+      --teal: #0d7377;
+      --teal-soft: #e6f4f4;
+      --teal-hover: #0a5c5f;
+      --teal-glow: rgba(13, 115, 119, 0.08);
+
+      /* Warm terracotta — secondary accent */
+      --terra: #c4623a;
+      --terra-soft: #fdf0ea;
+      --terra-hover: #a8512e;
+
+      /* Muted violet — tertiary hint */
+      --violet: #7c6f9b;
+      --violet-soft: #f0edf5;
+
+      --code-bg: #f5f4f0;
+      --font-body: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: oklch(.14 .006 286);
-        --bg-subtle: oklch(.19 .006 286);
-        --text: oklch(.92 0 0);
-        --text-muted: oklch(.62 0 0);
-        --border: oklch(.30 .006 286);
-        --accent: oklch(.72 .12 250);
-        --accent-hover: oklch(.80 .10 250);
-        --code-bg: oklch(.20 .006 286);
+        --bg: #131516;
+        --bg-subtle: #1c1f21;
+        --text: #e8e6e1;
+        --text-muted: #9a968c;
+        --border: #2e2d2a;
+
+        --teal: #3fbfc3;
+        --teal-soft: rgba(63, 191, 195, 0.08);
+        --teal-hover: #5dd1d5;
+        --teal-glow: rgba(63, 191, 195, 0.06);
+
+        --terra: #e0845e;
+        --terra-soft: rgba(224, 132, 94, 0.08);
+        --terra-hover: #eba07e;
+
+        --violet: #a99cc4;
+        --violet-soft: rgba(169, 156, 196, 0.06);
+
+        --code-bg: #1a1d1f;
       }
     }
 
     html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font);
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      /* Subtle dot grid — evokes cartographic / scientific instrument feel */
+      background-image: radial-gradient(circle, var(--border) 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      background-position: 12px 12px;
     }
 
     a {
-      color: var(--accent);
+      color: var(--teal);
       text-decoration: none;
       transition: color 0.15s;
     }
-    a:hover { color: var(--accent-hover); text-decoration: underline; }
+    a:hover { color: var(--teal-hover); text-decoration: underline; }
 
     /* --- Layout --- */
     .page {
@@ -66,7 +97,6 @@
       min-height: 100vh;
     }
 
-    /* Sidebar nav — hidden on mobile */
     .sidebar {
       display: none;
       width: 9rem;
@@ -84,8 +114,13 @@
       font-size: 0.8125rem;
       color: var(--text-muted);
       letter-spacing: 0.01em;
+      transition: color 0.15s, padding-left 0.15s;
     }
-    .sidebar a:hover { color: var(--text); text-decoration: none; }
+    .sidebar a:hover {
+      color: var(--teal);
+      text-decoration: none;
+      padding-left: 0.25rem;
+    }
 
     .main {
       max-width: 38rem;
@@ -96,25 +131,54 @@
     }
 
     /* --- Hero --- */
+    .hero {
+      position: relative;
+    }
+    /* Gradient glow behind the hero — atmospheric, like looking at Earth from orbit */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -6rem;
+      left: -4rem;
+      right: -4rem;
+      bottom: -2rem;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 40%, var(--teal-soft) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 60%, var(--terra-soft) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 50% 20%, var(--violet-soft) 0%, transparent 80%);
+      z-index: -1;
+      border-radius: 2rem;
+      opacity: 0.9;
+    }
+
     .hero h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
       margin-bottom: 1.25rem;
     }
-    @media (min-width: 768px) { .hero h1 { font-size: 3rem; } }
+    @media (min-width: 768px) { .hero h1 { font-size: 3.75rem; } }
+
+    /* Colored underline accent on the title */
+    .hero h1 .highlight {
+      background: linear-gradient(120deg, var(--teal), var(--terra));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     .hero .tagline {
-      font-size: 1.125rem;
+      font-size: 1.0625rem;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.65;
       max-width: 32rem;
     }
 
     .hero .actions {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-top: 2rem;
       flex-wrap: wrap;
     }
@@ -125,9 +189,10 @@
       gap: 0.4rem;
       padding: 0.6rem 1.25rem;
       border-radius: 0.5rem;
-      font-size: 0.875rem;
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
       font-weight: 500;
-      transition: all 0.15s;
+      transition: all 0.2s;
       border: 1px solid var(--border);
       background: var(--bg);
       color: var(--text);
@@ -135,14 +200,23 @@
     }
     .btn:hover { background: var(--bg-subtle); text-decoration: none; }
     .btn-primary {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
     }
     .btn-primary:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
-      color: white;
+      background: var(--teal-hover);
+      border-color: var(--teal-hover);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(13, 115, 119, 0.2);
+    }
+    .btn-secondary {
+      border-color: var(--terra);
+      color: var(--terra);
+    }
+    .btn-secondary:hover {
+      background: var(--terra-soft);
+      color: var(--terra-hover);
     }
 
     /* --- Sections --- */
@@ -151,28 +225,34 @@
     .divider { border: none; border-top: 1px solid var(--border); }
 
     h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      color: var(--text);
     }
+    @media (min-width: 768px) { h2 { font-size: 2.25rem; } }
 
     h3 {
-      font-size: 1rem;
+      font-size: 0.9375rem;
       font-weight: 600;
       letter-spacing: -0.01em;
     }
 
     p, li { color: var(--text-muted); font-size: 0.9375rem; }
+    li strong { color: var(--text); }
 
     ul { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
 
-    /* --- Schema block --- */
+    /* --- Schema block — tinted with teal left border --- */
     .schema-block {
       background: var(--code-bg);
       border: 1px solid var(--border);
+      border-left: 3px solid var(--teal);
       border-radius: 0.5rem;
       padding: 1.25rem 1.5rem;
       overflow-x: auto;
+      position: relative;
     }
     .schema-block pre {
       font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
@@ -180,16 +260,21 @@
       line-height: 1.7;
       color: var(--text);
     }
+    /* Syntax-like tinting for comments */
+    .schema-block .comment { color: var(--text-muted); }
+    .schema-block .keyword { color: var(--teal); }
+    .schema-block .type { color: var(--terra); }
+
     .schema-label {
       font-size: 0.6875rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
+      color: var(--teal);
       margin-bottom: 0.5rem;
     }
 
-    /* --- How it works --- */
+    /* --- How it works — colored step indicators --- */
     .steps {
       display: flex;
       flex-direction: column;
@@ -207,23 +292,30 @@
       width: 2rem;
       height: 2rem;
       border-radius: 50%;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--text-muted);
+      color: #fff;
     }
     .step-num::after { content: counter(step); }
+    /* Each step gets its own accent color */
+    .step:nth-child(1) .step-num { background: var(--teal); }
+    .step:nth-child(2) .step-num { background: var(--terra); }
+    .step:nth-child(3) .step-num { background: var(--violet); }
     .step-content h3 { margin-bottom: 0.25rem; }
 
-    /* --- Preview image --- */
+    /* --- Preview image — warm shadow and terracotta accent --- */
     .preview-img {
       border-radius: 0.5rem;
       border: 1px solid var(--border);
       overflow: hidden;
+      box-shadow: 0 8px 32px rgba(196, 98, 58, 0.08), 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.3s;
+    }
+    .preview-img:hover {
+      box-shadow: 0 12px 40px rgba(196, 98, 58, 0.14), 0 4px 12px rgba(0,0,0,0.06);
     }
     .preview-img img {
       width: 100%;
@@ -238,7 +330,7 @@
       background: var(--bg-subtle);
     }
 
-    /* --- Link cards --- */
+    /* --- Link cards — colored left border on hover --- */
     .cards {
       display: grid;
       grid-template-columns: 1fr;
@@ -250,12 +342,21 @@
       border: 1px solid var(--border);
       border-radius: 0.5rem;
       padding: 1rem 1.25rem;
-      transition: background 0.15s;
+      transition: all 0.2s;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      border-left: 3px solid var(--border);
     }
-    .card:hover { background: var(--bg-subtle); text-decoration: none; }
+    .card:hover {
+      background: var(--teal-glow);
+      border-left-color: var(--teal);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    .card:nth-child(2):hover { border-left-color: var(--terra); background: var(--terra-soft); }
+    .card:nth-child(3):hover { border-left-color: var(--violet); background: var(--violet-soft); }
+    .card:nth-child(4):hover { border-left-color: var(--teal); }
     .card .card-title {
       font-size: 0.875rem;
       font-weight: 600;
@@ -267,9 +368,11 @@
     }
     .card .card-arrow {
       font-size: 0.75rem;
-      color: var(--accent);
+      color: var(--teal);
       margin-top: 0.25rem;
+      transition: transform 0.2s;
     }
+    .card:hover .card-arrow { transform: translateX(3px); }
 
     /* --- Footer --- */
     footer {
@@ -277,18 +380,37 @@
       background: var(--bg-subtle);
       padding: 2.5rem 2rem;
       text-align: center;
+      /* Override the dot grid for the footer */
+      background-image: none;
     }
     footer p {
       font-size: 0.8125rem;
       color: var(--text-muted);
     }
     footer a { color: var(--text-muted); }
-    footer a:hover { color: var(--text); }
+    footer a:hover { color: var(--teal); }
     .footer-links {
       display: flex;
       gap: 1.5rem;
       justify-content: center;
       margin-bottom: 1rem;
+    }
+    /* Small colored bar above footer */
+    .footer-accent {
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--terra), var(--violet));
+      border: none;
+      margin: 0;
+    }
+
+    /* --- Inline code --- */
+    code:not(pre code) {
+      background: var(--code-bg);
+      padding: 0.15em 0.4em;
+      border-radius: 0.25rem;
+      font-size: 0.85em;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      border: 1px solid var(--border);
     }
 
     /* --- Animations --- */
@@ -331,13 +453,13 @@
 
       <!-- Hero -->
       <header class="hero fade-in">
-        <h1>Matadisco</h1>
+        <h1><span class="highlight">Matadisco</span></h1>
         <p class="tagline">
           An open, decentralized network for data discovery. Publish metadata about any dataset to <a href="https://atproto.com/">ATProto</a>. Build community portals. Find what matters.
         </p>
         <div class="actions">
           <a href="https://github.com/vmx/matadisco" class="btn btn-primary">View on GitHub &rarr;</a>
-          <a href="https://vmx.github.io/matadisco-viewer/" class="btn">Live demo</a>
+          <a href="https://vmx.github.io/matadisco-viewer/" class="btn btn-secondary">Live demo</a>
         </div>
       </header>
 
@@ -398,23 +520,23 @@
         </p>
         <div class="schema-block">
           <div class="schema-label">cx.vmx.matadisco</div>
-          <pre><code>/// A Matadisco record
-record matadisco {
-    /// The time the metadata record was created
-    created!: Datetime,
-    /// A URI containing metadata
-    metadata!: Uri,
-    /// Preview of the data
+          <pre><code><span class="comment">/// A Matadisco record</span>
+<span class="keyword">record</span> matadisco {
+    <span class="comment">/// The time the metadata record was created</span>
+    created!: <span class="type">Datetime</span>,
+    <span class="comment">/// A URI containing metadata</span>
+    metadata!: <span class="type">Uri</span>,
+    <span class="comment">/// Preview of the data</span>
     preview: {
-        /// The media type the preview has
-        mimeType!: string,
-        /// The URL to the preview
-        url: Uri,
+        <span class="comment">/// The media type the preview has</span>
+        mimeType!: <span class="type">string</span>,
+        <span class="comment">/// The URL to the preview</span>
+        url: <span class="type">Uri</span>,
     },
 }</code></pre>
         </div>
         <p>
-          Only <code style="background:var(--code-bg);padding:0.15em 0.4em;border-radius:0.25rem;font-size:0.85em;">metadata</code> and <code style="background:var(--code-bg);padding:0.15em 0.4em;border-radius:0.25rem;font-size:0.85em;">created</code> are required. The preview is optional — for satellite imagery it's a thumbnail, for articles a summary, for podcasts an audio snippet.
+          Only <code>metadata</code> and <code>created</code> are required. The preview is optional — for satellite imagery it's a thumbnail, for articles a summary, for podcasts an audio snippet.
         </p>
       </section>
 
@@ -523,6 +645,9 @@ record matadisco {
 
     </main>
   </div>
+
+  <!-- Footer gradient accent bar -->
+  <hr class="footer-accent">
 
   <!-- Footer -->
   <footer>
